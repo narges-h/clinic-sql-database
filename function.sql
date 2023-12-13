@@ -1,4 +1,4 @@
-﻿
+﻿ USE DB_clinic GO
 --فانکشنی که کد ملی بیمار رو بگیره و ساعت و روز نوبتشو بده
 
 CREATE FUNCTION visit_time (@codemeli VARCHAR(10))
@@ -18,5 +18,6 @@ END
 
 SELECT dbo.visit_time('0592556898');
 
-
+select * from Patient
+select * from visit
 
