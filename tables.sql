@@ -56,6 +56,8 @@ hazine varchar(10) NOT NULL
 );
 alter table visit
 alter column Date varchar(10);
+alter table visit
+alter column hazine int;
 
 CREATE TABLE tashkhiesBimari(
 id int PRIMARY KEY Identity(1,1),

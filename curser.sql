@@ -19,6 +19,19 @@ Open cr
 Close cr
 Deallocate cr
 
-
+--------------------------------------------------------
+Declare @id int , @name nvarchar(15)
+Declare CrName cursor
+for
+(
+			select CategoryID , CategoryName
+			from Categories
+)
+open CrName
+			fetch next from CrName Into @id,@name
+			Print(N'Information is: '+' '+cast(@id as nvarchar(5))+' '+@name)
+		
+Close CrName
+Deallocate CrName
 select * from visit
-
+--------------------------------------------------------------
