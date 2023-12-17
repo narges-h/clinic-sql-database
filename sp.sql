@@ -1,13 +1,23 @@
 ﻿use DB_clinic GO
-
-  --ویزیت شدند و بیمه ی آسیا دارندd1 تا d2 کدملی بیمارانی که در بازه ی 
+select * from bimeh
+select * from visit
+select * from bimehShode
+  --ویزیت شدند و بیمه ی آسیا دارندd1 تا d2 کدملی بیمارانی و فامیلی بیمارانی که در بازه ی 
   CREATE PROCEDURE sp_asia
   @date1 VARCHAR(10),
   @date2 VARCHAR(10),
-  @result nvarchar(50) output
+  @result1 nvarchar(50) output,
+  @result2 nvarchar(50) output
 AS
 BEGIN
-  set @result = ( SELECT codeMeli
+  set @result1 = ( SELECT codeMeli
+  FROM Patient 
+  INNER JOIN visit ON Patient.idParvande = visit.idParvande
+  INNER JOIN bimehShode ON visit.idParvande = bimehShode.idParvande 
+  INNER JOIN bimeh ON bimehShode.codeBimeh = bimeh.codeBimeh
+  WHERE bimeh.onvan LIKE 'asia' 
+  AND visit.Date BETWEEN @date1 AND @date2)
+  set @result2 = ( SELECT lname
   FROM Patient 
   INNER JOIN visit ON Patient.idParvande = visit.idParvande
   INNER JOIN bimehShode ON visit.idParvande = bimehShode.idParvande 
@@ -16,9 +26,9 @@ BEGIN
   AND visit.Date BETWEEN @date1 AND @date2)
 END
 
-declare @res NVARCHAR(50)
-exec sp_asia '1402/05/05','1402/06/26',@res output 
-select @res
+declare @res1 NVARCHAR(50),@res2 NVARCHAR(50)
+exec sp_asia '1401/05/05','1401/06/26',@res1 output ,@res2 output 
+select @res1,@res2
 -------------------------------------------------------------------------------------
 --پروسیجری که روز هفته رو بگیره وفامیلی دکترهای اون روزو بده
 
