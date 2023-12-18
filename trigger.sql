@@ -38,9 +38,22 @@ end
 update bimeh set onvan = 'salamat' where codeBimeh = 4
 -------------------------------------------------------------
 -- delete trigger
-Drop Trigger If Exists TR_DeleteBime
+Drop Trigger If Exists TR_insertDoctor
 -----------------------------------------------------------
+--اگر دکتر جدید اضافه شد،به برنامه پزشکان هم فیلدی با همان آیدی اضافه شود
+Create Trigger TR_insertDoctor
+On Doctor
+After insert
+As
+Begin
+	insert into barnamePezashk(idD) 
+	select idD from inserted
+End
+
+insert into Doctor(email,password,fname,lname,gender,Profession) values
+('banafshehh@gmail.com','banhash20','banafshe','hashemi','0','post')
 -----------------------------------------------------------
-
-
+Exec sp_helptext TR_insertDoctor
+Select * From Doctor
+Select * From barnamePezashk
 
