@@ -10,7 +10,10 @@ Begin
 	Print(N'رکورد جدید با موفقیت ثبت شد')
 End
 
-insert into bimeh values('salamat')
+insert into bimeh values('ma')
+select @@identity
+delete from bimeh where codeBimeh = 7
+select IDENT_CURRENT('visit')
 ------------------------------------------------------------
 --نمایش محتوای تریگر
 Exec sp_helptext TR_Insert

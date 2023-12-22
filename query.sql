@@ -8,3 +8,4 @@ select * from barnamePezashk
 select * from Doctor
 select * from tashkhiesBimari
 select * from tasviehHesab
+
