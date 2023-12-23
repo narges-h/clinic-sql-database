@@ -1,18 +1,23 @@
 ﻿
 --تریگری که پیغام ثبت موفقیت آمیز بدهد
 select * from bimeh
-
+select * from log
 Create Trigger TR_Insert
 On bimeh
 After Insert
 As
 Begin
 	Print(N'رکورد جدید با موفقیت ثبت شد')
+
+	declare @code int 
+	select @code = inserted.codeBimeh from inserted
+
+	insert into log(logTableName, logType, logKeyId, logDate)
+	values('bimeh','insert',@code,GETDATE())
 End
 
 insert into bimeh values('ma')
 select @@identity
-delete from bimeh where codeBimeh = 7
 select IDENT_CURRENT('visit')
 ------------------------------------------------------------
 --نمایش محتوای تریگر
@@ -24,24 +29,20 @@ On bimeh
 After Delete
 As
 Begin
-	Print(N'حذف با موفقیت انجام شد')
+    Print(N'حذف با موفقیت انجام شد')
+    declare @code int 
+	select @code = deleted.codeBimeh from deleted
+
+	insert into log(logTableName, logType, logKeyId, logDate)
+	values('bimeh','delete',@code,GETDATE())
+
 End
 
 Select * From bimeh
-Delete From bimeh Where codeBimeh=6
-----------------------------------------------------------
---پیغام تاربخ به روز رسانی
-Create Trigger TR_update
-On bimeh
-After Update
-As
-Begin
-      select getdate()
-end
-update bimeh set onvan = 'salamat' where codeBimeh = 4
+Delete From bimeh Where codeBimeh=5
 -------------------------------------------------------------
 -- delete trigger
-Drop Trigger If Exists TR_insertDoctor
+Drop Trigger If Exists TR_update
 -----------------------------------------------------------
 --اگر دکتر جدید اضافه شد،به برنامه پزشکان هم فیلدی با همان آیدی اضافه شود
 Create Trigger TR_insertDoctor
@@ -59,4 +60,13 @@ insert into Doctor(email,password,fname,lname,gender,Profession) values
 Exec sp_helptext TR_insertDoctor
 Select * From Doctor
 Select * From barnamePezashk
+------------------------------------------------------------------------
+create table log(
+logId int primary key identity(1,1),
+logTableName varchar(50),
+logType nvarchar(50),
+logKeyId int,
+logDate DateTime,
+)
+ 
 
